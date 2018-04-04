@@ -562,6 +562,12 @@ namespace Microsoft.EntityFrameworkCore.Migrations
             else
             {
                 base.Generate(operation, model, builder, terminate: false);
+
+                var isOnline = operation[SqlServerAnnotationNames.OnlineIndex] as bool?;
+                if (isOnline.HasValue && isOnline.Value)
+                {
+                    builder.Append("WITH ( ONLINE = ON )");
+                }
             }
 
             if (terminate)
